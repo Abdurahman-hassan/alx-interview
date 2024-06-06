@@ -1,0 +1,1 @@
+# This is a lockbox repository. It contains a collection of lockboxes, each of which is a directory containing a lockbox file and a README.md file.
