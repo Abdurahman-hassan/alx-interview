@@ -1,39 +1,68 @@
 #!/usr/bin/python3
-"""N queens puzzle"""
 import sys
 
 
-def isSafe(board, row, col):
-    """Check if a queen can be placed on board[row][col]"""
-    for c in range(col):
-        if board[c] is row or abs(board[c] - row) is abs(c - col):
+def is_safe(board, row, col):
+    # Check this row on left side
+    for i in range(col):
+        if board[row][i] == 1:
             return False
+
+    # Check upper diagonal on left side
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
+    # Check lower diagonal on left side
+    for i, j in zip(range(row, len(board), 1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
     return True
 
 
-def solveNQ(board, col):
-    """Solve N queens problem"""
-    n = len(board)
-    if col is n:
-        print(str([[c, board[c]] for c in range(n)]))
-        return
-    for i in range(n):
-        if isSafe(board, i, col):
-            board[col] = i
-            solveNQ(board, col + 1)
-            board[col] = -1
+def solve_nqueens_util(board, col):
+    # base case: If all queens are placed then return true
+    if col >= len(board):
+        solution = []
+        for i in range(len(board)):
+            for j in range(len(board)):
+                if board[i][j] == 1:
+                    solution.append([i, j])
+        print(solution)
+        return True
+
+    res = False
+    for i in range(len(board)):
+        if is_safe(board, i, col):
+            board[i][col] = 1
+
+            # Make result true if any placement is possible
+            res = solve_nqueens_util(board, col + 1) or res
+
+            board[i][col] = 0  # BACKTRACK
+
+    return res
+
+
+def solve_nqueens(n):
+    board = [[0 for _ in range(n)] for _ in range(n)]
+    solve_nqueens_util(board, 0)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) is not 2:
+    if len(sys.argv) != 2:
         print("Usage: nqueens N")
         sys.exit(1)
-    if not sys.argv[1].isdigit():
+
+    try:
+        N = int(sys.argv[1])
+    except ValueError:
         print("N must be a number")
         sys.exit(1)
-    N = int(sys.argv[1])
+
     if N < 4:
         print("N must be at least 4")
         sys.exit(1)
-    board = [-1 for i in range(N)]
-    solveNQ(board, 0)
+
+    solve_nqueens(N)
