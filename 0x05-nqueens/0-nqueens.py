@@ -31,9 +31,9 @@ if __name__ == "__main__":
     if not sys.argv[1].isdigit():
         print("N must be a number")
         sys.exit(1)
-    if int(sys.argv[1]) < 4:
+    N = int(sys.argv[1])
+    if N < 4:
         print("N must be at least 4")
         sys.exit(1)
-
-    board = [-1 for i in range(int(sys.argv[1]))]
+    board = [-1 for i in range(N)]
     solveNQ(board, 0)
