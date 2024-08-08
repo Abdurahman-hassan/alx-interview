@@ -6,7 +6,8 @@ Prime Game
 
 def sieve(n):
     """ Return a list of primes less than or
-        equal to n using the Sieve of Eratosthenes. """
+        equal to n using the Sieve of Eratosthenes.
+    """
     is_prime = [True] * (n + 1)
     p = 2
     while (p * p <= n):
